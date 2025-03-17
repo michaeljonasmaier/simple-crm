@@ -20,7 +20,7 @@ export class UserComponent {
   user: User = new User();
    
   constructor(public dialog: MatDialog) {
-
+    
   }
 
   openDialog() {
