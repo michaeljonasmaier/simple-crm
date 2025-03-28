@@ -11,11 +11,12 @@ import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.compo
 import { User } from '../../modules/user.class';
 import { collection, Firestore, onSnapshot } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatTooltipModule, MatCardModule],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, MatCardModule, RouterLink],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
@@ -26,7 +27,6 @@ export class UserComponent {
   constructor(public dialog: MatDialog, private firestoreService: FirebaseService) {
     this.firestoreService.getUserList().subscribe(userList =>{
       this.userArr = userList;
-      console.log(this.userArr)
     })
   }
 
