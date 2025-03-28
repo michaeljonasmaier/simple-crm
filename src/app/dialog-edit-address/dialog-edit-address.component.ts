@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../modules/user.class';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-dialog-edit-address',
@@ -21,12 +22,15 @@ export class DialogEditAddressComponent {
 
   user = new User();
 
-   constructor(public dialogRef: MatDialogRef<DialogEditAddressComponent>) {
+   constructor(public dialogRef: MatDialogRef<DialogEditAddressComponent>, public firebaseService: FirebaseService) {
   
     }
 
-  saveUser(){
-
+  async saveUser(){
+    this.loading = true;
+    await this.firebaseService.updateUser(this.user);
+    this.loading = false;
+    this.closeDialog();
   }
 
   closeDialog(){

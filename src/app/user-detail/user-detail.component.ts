@@ -20,29 +20,37 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
 export class UserDetailComponent {
 
   userId: string = "";
-  user: User = new User;
+  user: User | null = null;
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, public dialog: MatDialog){
 
   }
 
-  ngOnInit(){
-    this.route.paramMap.subscribe( paramMap => {
+  async ngOnInit(){
+     this.route.paramMap.subscribe( paramMap => {
       this.userId = paramMap.get('id') || '';
-      this.getUser(this.userId);
-    })
+     
+      
+    });
+    if (this.userId) {
+      this.getUser();
+   }
   }
 
-  async getUser(id: string){
-    this.user = await this.firebaseService.getUser(id);
+  async getUser(){
+    await this.firebaseService.subUser(this.userId);
+      await this.firebaseService.user$.subscribe(user => {
+       this.user = user!; // 🔥 Aktualisiert sich automatisch bei Änderungen
+     });
   }
 
   editMenu(){
     let dialog = this.dialog.open(DialogEditAddressComponent);
-    dialog.componentInstance.user = this.user;
+    dialog.componentInstance.user = new User(this.user);
   }
 
   editUserDetail(){
-    this.dialog.open(DialogEditUserComponent);
+    let dialog = this.dialog.open(DialogEditUserComponent);
+    dialog.componentInstance.user =  new User(this.user);
   }
 }

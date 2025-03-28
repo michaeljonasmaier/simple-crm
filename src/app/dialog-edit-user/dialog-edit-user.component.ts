@@ -8,11 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../modules/user.class';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-dialog-edit-user',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, CommonModule, FormsModule, MatProgressBarModule],
+  providers: [provideNativeDateAdapter()],
+  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, CommonModule, FormsModule, MatProgressBarModule, MatDatepickerModule],
   templateUrl: './dialog-edit-user.component.html',
   styleUrl: './dialog-edit-user.component.scss'
 })
@@ -21,12 +24,15 @@ export class DialogEditUserComponent {
 
   user = new User();
 
-  constructor(public dialogRef: MatDialogRef<DialogEditUserComponent>) {
+  constructor(public dialogRef: MatDialogRef<DialogEditUserComponent>,  public firebaseService: FirebaseService) {
 
   }
 
-  saveUser() {
+  async saveUser() {
     this.loading = true;
+    await this.firebaseService.updateUser(this.user);
+    this.loading = false;
+    this.closeDialog();
   }
 
   closeDialog() {
