@@ -1,5 +1,25 @@
-<p>user works!</p>
+<mat-card>
+    <mat-card-content>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>E-Mail</th>
+                    <th>City</th>
+                </tr>
+                @for (user of userArr; track $index) {
+                    <tr>
+                        <td>{{user.firstName}} {{user.lastName}}</td>
+                        <td>{{user.street}}</td>
+                        <td>{{user.city}}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </mat-card-content>
+</mat-card>
 
-<button class="add-user-button" mat-fab color="primary" matTooltip="Add user" [matTooltipPosition]="'above'" (click)="openDialog()">
+<button class="add-user-button" mat-fab color="primary" matTooltip="Add user" [matTooltipPosition]="'above'"
+    (click)="openDialog()">
     <mat-icon>add</mat-icon>
 </button>
